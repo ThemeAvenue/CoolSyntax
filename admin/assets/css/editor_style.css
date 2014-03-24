@@ -1,0 +1,15 @@
+pre {
+	font-family: "Courier 10 Pitch", Courier, monospace !important;
+	font-size: 80% !important;
+
+	background: #F4F4F4 !important;
+	border: 1px solid #CCC !important;
+	margin-bottom: 1.5em !important;
+	padding: 0.3em 0.5em !important;
+	min-height: 1.5em;
+}
+
+.pre-active {
+	background-color: #ccc !important;
+	border-color: #666 !important;
+}
