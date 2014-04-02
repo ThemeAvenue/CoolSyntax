@@ -26,12 +26,12 @@
       "type": "Less",
       "config": {
         "autoCompile": true,
-        "compress": false,
+        "compress": true,
         "sourcemaps": false,
         "cleancss": false,
         "strictMath": false,
         "strictUnits": false,
-        "autoprefixer": false
+        "autoprefixer": true
       }
     },
     "384d596c": {
