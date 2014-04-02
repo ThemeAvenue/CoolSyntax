@@ -6,7 +6,9 @@
 	// Document Ready //
 	/////////////////////
 	$(function () {
-		$('pre').click(function (e) {
+		var codeToHighlight = $('pre');
+
+		codeToHighlight.click(function (e) {
 			e.preventDefault();
 			var pre = $(this),
 				code = pre.text();
@@ -18,6 +20,14 @@
 			// Resize textarea to match its content and select content
 			textarea.autosize().select();
 
+		});
+
+		codeToHighlight.css('position','relative');
+		codeToHighlight.hover(function() {
+			$(this).append('<span class="wpcs-code-select">Click to select</span>');
+			$('.wpcs-code-select').fadeIn();
+		}, function() {
+			$('.wpcs-code-select').fadeOut().remove();
 		});
 
 		/* Click outside remove the textarea */
