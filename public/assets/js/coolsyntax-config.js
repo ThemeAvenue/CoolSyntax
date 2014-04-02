@@ -1,17 +1,20 @@
 /*global jQuery:false */
-(function ($) {
+(function($) {
 	'use strict';
 
 	/////////////////////
 	// Document Ready //
 	/////////////////////
-	$(function () {
+	$(function() {
 		var codeToHighlight = $('pre');
 
-		codeToHighlight.click(function (e) {
+		codeToHighlight.click(function(e) {
 			e.preventDefault();
+			
 			var pre = $(this),
 				code = pre.text();
+
+			$('.wpcs-code-select').remove();
 
 			// Create a copy of the code in a textarea, and disable spellcheck
 			var textarea = $('<textarea class="wpcs-code-copy" spellcheck="false">' + code + '</textarea>');
@@ -22,7 +25,7 @@
 
 		});
 
-		codeToHighlight.css('position','relative');
+		codeToHighlight.css('position', 'relative');
 		codeToHighlight.hover(function() {
 			$(this).append('<span class="wpcs-code-select">Click to select</span>');
 			$('.wpcs-code-select').fadeIn();
@@ -32,7 +35,7 @@
 
 		/* Click outside remove the textarea */
 		// http://stackoverflow.com/questions/152975/how-to-detect-a-click-outside-an-element
-		$(document).on('focusout', '.wpcs-code-copy', function (e) {
+		$(document).on('focusout', '.wpcs-code-copy', function(e) {
 			e.preventDefault();
 			$(this).prev('pre').show();
 			$(this).remove();
