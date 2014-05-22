@@ -35,7 +35,7 @@
 									});
 									ed.onNodeChange.add(function (ed, cm, n) {
 										active = ed.formatter.match('my_plugin_button_cmd');
-										ctrl = ed.controlManager.get('coolsyntax_button').setActive(active);
+										ctrl = ed.cm.get('coolsyntax_button').setActive(active);
 									});
 
 								} else {
