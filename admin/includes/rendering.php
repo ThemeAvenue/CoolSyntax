@@ -1,7 +1,7 @@
 <?php
 function coolsyntax_output_option( $option ) {
 
-	$current 	= wpbp_get_option( $option['name'] );
+	$current 	= coolsyntax_get_option( $option['name'] );
 	$field_type = $option['type'];
 	$prefix 	= 'coolsyntax';
 	
