@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 	"use strict";
 
 	////////////////
@@ -18,18 +18,15 @@
 	};
 
 	function escapeHtml(string) {
-		return String(string).replace(/[&<>"'\/]/g, function(s) {
+		return String(string).replace(/[&<>"'\/]/g, function (s) {
 			return entityMap[s];
 		});
 	}
 
 	function insertCS() {
-		var csWrap,
-			csLanguage = $('#cs-language').val(),
-			csCode = $('#cs-code').val();
-
-		csWrap = '<pre><code class="lang-' + csLanguage + '">' + escapeHtml(csCode) + '</code></pre>';
-		console.log(csLanguage, csCode);
+		var csLanguage = $('#cs-language').val(),
+			csCode = $('#cs-code').val(),
+			csWrap = '<pre><code class="lang-' + csLanguage + '">' + escapeHtml(csCode) + '</code></pre>';
 
 		if (window.tinyMCE) {
 
@@ -52,21 +49,16 @@
 	/////////////////////
 	// Document Ready //
 	/////////////////////
-	$(function() {
+	$(function () {
 
-		if (window.tinyMCE) {
-			console.log('TinyMCE version:' + tinymce.majorVersion + '.' + tinymce.minorVersion);
-		}
-
-		$('.wpcs-insert-code').on('click', function(e) {
+		$('.wpcs-insert-code').on('click', function (e) {
 			e.preventDefault();
 			insertCS();
 		});
 
-		$('.wpcs-lang-favorite > button').on('click', function(e) {
+		$('.wpcs-lang-favorite > button').on('click', function (e) {
 			e.preventDefault();
 			var language = $(this).attr('title');
-			console.log(language);
 			$('#cs-language').val(language);
 		});
 
