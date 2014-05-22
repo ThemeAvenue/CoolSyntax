@@ -1,3 +1,10 @@
+<?php
+/**
+ * Get values
+ */
+$favorites = coolsyntax_get_option( 'favorite', array() );
+$languages = get_coolsyntax_languages();
+?>
 <div style="display: none;">
 	<form id="coolsyntax-dialog" action="#">
 		<table class="wpcs-dialog-table" border="0" cellpadding="0" cellspacing="0">
@@ -6,31 +13,27 @@
 					<div class="wpcs-lang-select">
 						<label for="cs-language" class="label"><?php _e( 'Choose Language', 'coolsyntax' ); ?></label>
 						<select id="cs-language" name="cs-lang" data-orig-value="default" data-value="default">
-							<option value="markup">Markup</option>
-							<option value="css">CSS</option>
-							<option value="javascript">JavaScript</option>
-							<option value="java">Java</option>
-							<option value="php">PHP</option>
-							<option value="coffeescript">CoffeeScript</option>
-							<option value="scss">Sass (Scss)</option>
-							<option value="bash">Bash</option>
-							<option value="c">C</option>
-							<option value="c++">C++</option>
-							<option value="python">Python</option>
-							<option value="sql">SQL</option>
-							<option value="groov">Groov</option>
-							<option value="http">HTTP</option>
-							<option value="ruby">Ruby</option>
-							<option value="gherkin">Gherkin</option>
-							<option value="csharp">C#</option>
-							<option value="go">Go</option>
+							<?php
+							if( is_array( $languages ) && !empty( $languages ) ) {
+								foreach( $languages as $language => $label ) {
+									echo "<option value='$language'>$label</option>";
+								}
+							}
+							?>
 						</select>
 					</div>
 				</td>
 				<td>
 					<div class="wpcs-lang-favorite">
 						<div class="label"><?php _e( 'Favorites', 'coolsyntax' ); ?>:</div>
-						<button title="php">PHP</button> <button title="javascript">JavaScript</button>
+						<?php
+						foreach( $favorites as $key => $favorite ):
+							if( !isset( $languages[$favorite] ) )
+								continue; ?>
+						
+							<button title="<?php echo $favorite; ?>"><?php echo $languages[$favorite]; ?></button>
+
+						<?php endforeach; ?>
 					</div>
 				</td>
 			</tr>
