@@ -251,7 +251,18 @@ class Cool_Syntax {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-coolsyntax', plugins_url( 'assets/css/coolsyntax.css', __FILE__ ), array(), self::VERSION );
+
+		$theme   = coolsyntax_get_option( 'theme', 'prism' );
+		$file    = ( 'prism' == $theme ) ? 'prism.css' : "prism-$theme.css";
+		$plugins = coolsyntax_get_option( 'plugins', array() );
+
+		/* Load the style, if needed, for ever Prism plugin enabled */
+		foreach( $plugins as $key => $plugin ) {
+			$this->load_prism_plugin_resource( $plugin, 'style' );
+		}
+
+		wp_enqueue_style( $this->plugin_slug . '-coolsyntax', CSY_URL . 'public/assets/css/coolsyntax.css', array(), self::VERSION );
+		wp_enqueue_style( $this->plugin_slug . '-prism', CSY_URL . "public/assets/bower_components/prism/themes/$file", array(), self::VERSION );
 	}
 
 	/**
@@ -260,7 +271,117 @@ class Cool_Syntax {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-coolsyntax', plugins_url( 'assets/js/coolsyntax.min.js', __FILE__ ), array( 'jquery' ), self::VERSION, true );
+
+		$plugins = coolsyntax_get_option( 'plugins', array() );
+
+		wp_enqueue_script( $this->plugin_slug . '-coolsyntax', CSY_URL . 'public/assets/js/coolsyntax.min.js', array( 'jquery' ), self::VERSION, true );
+
+		/* Load the script, if needed, for ever Prism plugin enabled */
+		foreach( $plugins as $key => $plugin ) {
+			$this->load_prism_plugin_resource( $plugin, 'script' );
+		}
+
 	}
+
+	/**
+	 * Load required resources for a prism plugin.
+	 * 
+	 * @param  string $plugin   Plugin that need to be loaded
+	 * @param  string $resource Type of resource that's needed (style or script)
+	 * @since  1.0.0
+	 */
+	protected function load_prism_plugin_resource( $plugin, $resource ) {
+
+		$deps = $this->get_prism_plugin_dependency( $plugin );
+
+		if( false === $deps )
+			return;
+
+		if( !isset( $deps[$resource] ) )
+			return;
+
+		$src    = isset( $deps['path'] ) ? $deps['path'] : false;
+		$script = isset( $deps['script'] ) ? $deps['script'] : false;
+		$style  = isset( $deps['style'] ) ? $deps['style'] : false;
+
+		if( 'script' == $resource && false !== $script )
+			wp_enqueue_script( "$this->plugin_slug-prism-$plugin", CSY_URL . "$src/$script", array(), self::VERSION, true );
+
+		elseif( 'style' == $resource && false !== $style )
+			wp_enqueue_style( "$this->plugin_slug-prism-$plugin", CSY_URL . "$src/$style", array(), self::VERSION, 'all' );
+
+	}
+
+	/**
+	 * Get Prism plugin dependencies.
+	 *
+	 * Get the script, style and path of a specific
+	 * Prism plugin.
+	 * 
+	 * @param  string $plugin Plugin which dependencies are required
+	 * @return [type]         [description]
+	 */
+	protected function get_prism_plugin_dependency( $plugin ) {
+
+		$plugins = array(
+			'line_highlight' => array(
+				'path'   => 'public/assets/bower_components/prism/plugins/line-highlight',
+				'style'  => 'prism-line-highlight.css',
+				'script' => 'prism-line-highlight.min.js'
+			),
+			'line_numbers' => array(
+				'path'   => 'public/assets/bower_components/prism/plugins/line-numbers',
+				'style'  => 'prism-line-numbers.css',
+				'script' => 'prism-line-numbers.min.js'
+			),
+			'show_invisibles' => array(
+				'path'   => 'public/assets/bower_components/prism/plugins/show-invisibles',
+				'style'  => 'prism-show-invisibles.css',
+				'script' => 'prism-show-invisibles.min.js'
+			),
+			'autolinker' => array(
+				'path'   => 'public/assets/bower_components/prism/plugins/autolinker',
+				'style'  => 'prism-autolinker.css',
+				'script' => 'prism-autolinker.min.js'
+			),
+			'webplateform_docs' => array(
+				'path'   => 'public/assets/bower_components/prism/plugins/wpd',
+				'style'  => 'prism-wpd.css',
+				'script' => 'prism-wpd.min.js'
+			),
+			'file_highlight' => array(
+				'path'   => 'public/assets/bower_components/prism/plugins/file-highlight',
+				'script' => 'prism-file-highlight.min.js'
+			),
+		);
+
+		$deps = isset( $plugins[$plugin] ) ? $plugins[$plugin] : false;
+		
+		return apply_filters( 'coolsyntax_prism_plugins_deps', $deps );
+
+	}
+
+}
+
+/**
+ * Get plugin option
+ * 
+ * @param  string $option  Option to retrieve
+ * @param  string $default Default option to return if no value is found
+ * @return mixed           Option value
+ * @since  1.0.0
+ */
+function coolsyntax_get_option( $option, $default = '' ) {
+
+	/*
+	 * Call $plugin_slug from public plugin class.
+	 */
+	$plugin = Cool_Syntax::get_instance();
+	$plugin_slug = $plugin->get_plugin_slug();
+
+	$key     = $plugin_slug . '_options';
+	$options = get_option( $key, $default );
+
+	return isset( $options[$option] ) ? $options[$option] : $default;
 
 }
