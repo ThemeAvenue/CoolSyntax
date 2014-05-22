@@ -14,11 +14,6 @@
 	<div class="icon32" id="icon-options-general"></div>  
 	<h2><?php _e( 'CoolSyntax Settings', 'coolsyntax' ); ?></h2>
 
-	<?php
-	if( isset( $_GET['settings-updated'] ) ) {
-		?><div class="updated"><p><?php _e( 'Settings updated successfully.', 'coolsyntax' ); ?></p></div><?php
-	}
-	?>
 	<form action="options.php" method="post">
 		<?php
 		settings_fields( $this->plugin_slug . '_options' );
