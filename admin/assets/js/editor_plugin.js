@@ -1,11 +1,11 @@
-(function($) {
+(function ($) {
 	tinymce.create(
 		'tinymce.plugins.myPlugin', {
 			/**
 			 * @param tinymce.Editor editor
 			 * @param string url
 			 */
-			init: function(ed, url) {
+			init: function (ed, url) {
 				/**
 				 *  register a new button
 				 */
@@ -18,25 +18,42 @@
 						cmd: 'my_plugin_button_cmd',
 						title: ed.getLang('myPlugin.buttonTitle', 'Add Code'),
 						image: url + '/button.png',
-						onPostRender: function() {
+						onPostRender: function () {
 							var ctrl = this;
 
 							///////////////////////////////////////
 							// Allow editing of selection //
 							///////////////////////////////////////
-							ed.on('NodeChange', function(e) {
-								// console.log(e.element);
-								ctrl.active(e.element.nodeName == 'PRE');
-								if(e.element.nodeName == 'PRE') {
-									console.log(e.element);
-									// e.element.className += ' pre-active';
-									// $(e.element).addClass('active');
+							if (window.tinyMCE) {
+
+								var version = tinymce.majorVersion;
+
+								if (version < 4) {
+									/* Old 3.0 API */
+									ed.onNodeChange.add(function (ed, cm, node) {
+										console.log(e.element);
+									});
+									ed.onNodeChange.add(function (ed, cm, n) {
+										active = ed.formatter.match('my_plugin_button_cmd');
+										ctrl = ed.controlManager.get('coolsyntax_button').setActive(active);
+									});
+
+								} else {
+									/* New 4.0 API */
+									ed.on('NodeChange', function (e) {
+										ctrl.active(e.element.nodeName == 'CODE');
+										if (e.element.nodeName == 'CODE') {
+											console.log(e.element, e.element.nodeName);
+											// e.element.className += ' pre-active';
+											// @TODO: retrieve the code as string and insert into textarea
+											// document.getElementById('cs-code').value = e.element;
+										} else {
+											// @TODO: remove class .pre-active from all nodes
+											// e.element.classList.remove('pre-active');
+										}
+									});
 								}
-								else {
-									e.element.classList.remove('pre-active');
-									// e.element.removeClass('active');
-								}
-							});
+							}
 						}
 					}
 				);
@@ -47,7 +64,7 @@
 
 				ed.addCommand(
 					'my_plugin_button_cmd',
-					function() {
+					function () {
 						// triggers the thickbox
 						var width = jQuery(window).width(),
 							H = jQuery(window).height(),
