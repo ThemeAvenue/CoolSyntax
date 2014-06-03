@@ -1,53 +1,61 @@
 /*global jQuery:false */
-(function($) {
+(function ($) {
 	'use strict';
 
 	/////////////////////
 	// Document Ready //
 	/////////////////////
-	$(function() {
-		var codeToHighlight = $('pre');
+	$(function () {
+		var pre = $('pre');
+		pre.css('position', 'relative');
 
-		///////////////////////////////////
-		// Transform pre into textarea //
-		///////////////////////////////////
-		codeToHighlight.click(function(e) {
-			e.preventDefault();
+		pre.each(function (index, el) {
 
-			var pre = $(this);
+			// Define variables and retrieve all style associated with the <pre>
+			var pre = $(this),
+				preHeight = $(this).outerHeight(),
+				preMarginB = $(this).css('marginBottom');
 
-			// Remove the "click to select" hint
-			$('.wpcs-code-select').remove();
+			//////////////////////////////////////////
+			// onCLICK: transform into textarea //
+			//////////////////////////////////////////
+			pre.click(function (e) {
+				e.preventDefault();
 
-			// Create a copy of the code in a textarea, and disable spellcheck
-			var textarea = $('<textarea class="wpcs-code-copy" spellcheck="false">' + pre.text() + '</textarea>');
-			pre.hide().after(textarea);
+				// Remove the "click to select" hint
+				$('.wpcs-code-select').remove();
 
-			// Resize textarea to match its content and select content
-			if (jQuery().autosize) {
-				textarea.autosize().select();
-			} else {
+				// Create a copy of the code in a textarea, and disable spellcheck
+				var textarea = $('<textarea class="wpcs-code-copy" spellcheck="false">' + pre.text() + '</textarea>');
+				textarea.css({
+					height: preHeight,
+					marginBottom: preMarginB
+				});
+				pre.hide().after(textarea);
+
+				// Select content
 				textarea.select();
-			}
 
-		});
+			});
 
-		//////////////////////////
-		// Give hint to users //
-		//////////////////////////
-		codeToHighlight.css('position', 'relative');
-		codeToHighlight.hover(function() {
-			$(this).append('<span class="wpcs-code-select">Click to select</span>');
-			$('.wpcs-code-select').fadeIn();
-		}, function() {
-			$('.wpcs-code-select').remove();
+			////////////////////////////////////
+			// onHOVER: Give hint to users //
+			////////////////////////////////////
+			pre.hover(function () {
+				$(this).append('<span class="wpcs-code-select">Click to select</span>');
+				$('.wpcs-code-select').fadeIn();
+			}, function () {
+				$('.wpcs-code-select').remove();
+			});
+
+
 		});
 
 		/////////////////////////////////////////
 		// Click outside remove the textarea //
 		/////////////////////////////////////////
 		/// http://stackoverflow.com/questions/152975/how-to-detect-a-click-outside-an-element
-		$(document).on('focusout', '.wpcs-code-copy', function(e) {
+		$(document).on('focusout', '.wpcs-code-copy', function (e) {
 			e.preventDefault();
 			$(this).prev('pre').show();
 			$(this).remove();
