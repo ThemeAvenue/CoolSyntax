@@ -2,6 +2,12 @@
 
 @import "_prism.less";
 
+pre[class*=language-] {
+	code {
+		background: none;
+	}
+}
+
 .wpcs-code-copy {
 	display: block;
 	width: 100%;
@@ -29,9 +35,9 @@ pre,
 .wpcs-code-select {
 	font: 14px/1 Arial, "Helvetica Neue", Helvetica, sans-serif;
 	color: #fff;
-	display: block;
+	display: inline-block;
 	text-align: center;
-	width: 140px;
+	width: 200px;
 	height: 40px;
 	line-height: 40px;
 	margin: 0;
@@ -44,7 +50,7 @@ pre,
 	position: absolute;
 	top: 50%;
 	right: 50%;
-	margin: -40px -100px 0 0;
+	margin: -20px -130px 0 0;
 
 	transition: all .25s ease;
 }
