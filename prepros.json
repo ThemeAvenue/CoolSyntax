@@ -122,22 +122,6 @@
       "parents": [
         "32465786"
       ]
-    },
-    "e3bd9ff3": {
-      "id": "e3bd9ff3",
-      "pid": "29caed5c",
-      "path": "public\\assets\\bower_components\\prism\\plugins\\line-highlight\\prism-line-highlight.js",
-      "parents": [
-        "32465786"
-      ]
-    },
-    "05677fa6": {
-      "id": "05677fa6",
-      "pid": "29caed5c",
-      "path": "public\\assets\\bower_components\\prism\\plugins\\line-numbers\\prism-line-numbers.js",
-      "parents": [
-        "32465786"
-      ]
     }
   },
   "images": {
