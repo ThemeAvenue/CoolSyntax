@@ -1,6 +1,6 @@
 (function ($) {
 	tinymce.create(
-		'tinymce.plugins.myPlugin', {
+		'tinymce.plugins.coolSyntax', {
 			/**
 			 * @param tinymce.Editor editor
 			 * @param string url
@@ -16,7 +16,7 @@
 				ed.addButton(
 					'coolsyntax_button', {
 						cmd: 'my_plugin_button_cmd',
-						title: ed.getLang('myPlugin.buttonTitle', 'Add Code'),
+						title: ed.getLang('coolSyntax.buttonTitle', 'Add Code'),
 						image: url + '/button.png',
 						onPostRender: function () {
 							var ctrl = this;
@@ -43,13 +43,27 @@
 									ed.on('NodeChange', function (e) {
 										ctrl.active(e.element.nodeName == 'CODE');
 										if (e.element.nodeName == 'CODE') {
-											console.log(e.element, e.element.nodeName);
-											// e.element.className += ' pre-active';
-											// @TODO: retrieve the code as string and insert into textarea
-											// document.getElementById('cs-code').value = e.element;
+											if (e.element.parentNode.className !== ' pre-active') {
+												ed.dom.removeClass(ed.dom.select('PRE'), 'pre-active');
+												e.element.parentNode.className += ' pre-active';
+											}
+											
+											// @TODO: retrieve the code as string and insert into textarea (http://www.tinymce.com/wiki.php/api4:method.tinymce.dom.DOMUtils.getOuterHTML)
+											console.log(e.element.parentNode);
+											console.log(ed.selection.getNode());
+
+											/*var node = ed.selection.select(ed.dom.select('PRE')[0]);
+											var nodeOuterHTML = ed.selection.getContent({
+												format: 'text'
+											});
+											var textarea = document.getElementById('cs-code');
+											textarea.value = nodeOuterHTML;*/
+
+											// @TODO: Refresh the auto resize
+											// textarea.trigger('autosize.resize');
 										} else {
-											// @TODO: remove class .pre-active from all nodes
-											// e.element.classList.remove('pre-active');
+											// @TODO: remove class .pre-active from all nodes (http://www.tinymce.com/wiki.php/api4:method.tinymce.dom.DOMUtils.removeClass)
+											ed.dom.removeClass(ed.dom.select('PRE'), 'pre-active');
 										}
 									});
 								}
@@ -79,6 +93,6 @@
 		});
 
 	// register plugin
-	tinymce.PluginManager.add('coolsyntax', tinymce.plugins.myPlugin);
+	tinymce.PluginManager.add('coolsyntax', tinymce.plugins.coolSyntax);
 
 })();

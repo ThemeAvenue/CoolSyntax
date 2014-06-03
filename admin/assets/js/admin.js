@@ -26,7 +26,7 @@
 	function insertCS() {
 		var csLanguage = $('#cs-language').val(),
 			csCode = $('#cs-code').val(),
-			csWrap = '<pre><code class="lang-' + csLanguage + '">' + escapeHtml(csCode) + '</code></pre>';
+			csWrap = '<pre class="coolsyntax"><code class="lang-' + csLanguage + '">' + escapeHtml(csCode) + '</code></pre>';
 
 		if (window.tinyMCE) {
 

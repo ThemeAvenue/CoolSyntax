@@ -1,4 +1,4 @@
-pre {
+pre.coolsyntax {
 	font-family: "Courier 10 Pitch", Courier, monospace !important;
 	font-size: 80% !important;
 
@@ -7,9 +7,17 @@ pre {
 	margin-bottom: 1.5em !important;
 	padding: 0.3em 0.5em !important;
 	min-height: 1.5em;
-}
 
-.pre-active {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+pre.coolsyntax:hover {
+	cursor: not-allowed;
+}
+pre.pre-active {
 	background-color: #ccc !important;
 	border-color: #666 !important;
 }
