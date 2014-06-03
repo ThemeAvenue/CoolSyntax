@@ -28,3 +28,6 @@ $RECYCLE.BIN/
 
 #sftp configuration file
 sftp-config.json
+
+### Other Stuff ###
+*.bak
