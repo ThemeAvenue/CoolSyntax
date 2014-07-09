@@ -32,3 +32,4 @@ sftp-config.json
 ### Other Stuff ###
 *.bak
 prepros.json
+prepros-ftp.json
