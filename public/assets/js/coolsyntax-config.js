@@ -2,52 +2,62 @@
 (function ($) {
 	'use strict';
 
-	/////////////////////
-	// Document Ready //
-	/////////////////////
 	$(function () {
-		var pre = $('pre');
-		pre.css('position', 'relative');
-
+		var pre = $('pre.coolsyntax');
 		pre.each(function (index, el) {
 
-			// Define variables and retrieve all style associated with the <pre>
-			var pre = $(this),
-				preHeight = $(this).outerHeight(),
-				preMarginB = $(this).css('marginBottom');
+			Prism.highlightAll(false, function () {
 
-			//////////////////////////////////////////
-			// onCLICK: transform into textarea //
-			//////////////////////////////////////////
-			pre.click(function (e) {
-				e.preventDefault();
+				// Define variables and retrieve all style associated with the <pre>
+				// Needs to get height() after the highlighting is done (See http://prismjs.com/extending.html)
 
-				// Remove the "click to select" hint
-				$('.wpcs-code-select').remove();
+				var pre = $(el),
+					preHeight = pre.outerHeight(),
+					preMarginB = pre.css('marginBottom');
 
-				// Create a copy of the code in a textarea, and disable spellcheck
-				var textarea = $('<textarea class="wpcs-code-copy" spellcheck="false">' + pre.text() + '</textarea>');
-				textarea.css({
-					height: preHeight,
-					marginBottom: preMarginB
+				var newEl = {
+					hint: $('<span>', {
+						class: 'wpcs-code-select',
+						text: 'Click to select'
+					}),
+					textarea: $('<textarea>', {
+						class: 'wpcs-code-copy',
+						id: 'wpcs-' + index,
+						spellcheck: 'false',
+						html: pre.text(),
+						outerHeight: preHeight
+					})
+				};
+
+				newEl.textarea.css('marginBottom', preMarginB);
+
+				//////////////////////////////////////////
+				// onCLICK: transform into textarea //
+				//////////////////////////////////////////
+				pre.click(function (e) {
+					e.preventDefault();
+
+					// Remove the "click to select" hint
+					newEl.hint.remove();
+
+					// Insert the copy of the textarea's code after the textarea
+					pre.hide().after(newEl.textarea);
+
+					// Select content
+					newEl.textarea.select();
+
 				});
-				pre.hide().after(textarea);
 
-				// Select content
-				textarea.select();
+				////////////////////////////////////
+				// onHOVER: Give hint to users //
+				////////////////////////////////////
+				pre.hover(function () {
+					newEl.hint.appendTo($(this));
+				}, function () {
+					newEl.hint.remove();
+				});
 
 			});
-
-			////////////////////////////////////
-			// onHOVER: Give hint to users //
-			////////////////////////////////////
-			pre.hover(function () {
-				$(this).append('<span class="wpcs-code-select">Click to select</span>');
-				$('.wpcs-code-select').fadeIn();
-			}, function () {
-				$('.wpcs-code-select').remove();
-			});
-
 
 		});
 
