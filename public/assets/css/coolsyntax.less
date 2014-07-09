@@ -2,12 +2,26 @@
 
 @import "_prism.less";
 
-pre[class*=language-] {
-	code {
+// Reset style
+.coolsyntax {
+	position: relative;
+
+	code,
+	.token {
+		border: none;
 		background: none;
+		text-decoration: none;
 	}
 }
 
+// Style the code block & textarea
+.coolsyntax,
+.wpcs-code-copy {
+	font-family: Consolas,Monaco,'Andale Mono',monospace;
+	font-size: 13px;
+	line-height: 1.428571429;
+	overflow: hidden;
+}
 .wpcs-code-copy {
 	display: block;
 	width: 100%;
@@ -24,14 +38,7 @@ pre[class*=language-] {
 	box-sizing: border-box;
 }
 
-// On Focus
-pre,
-.wpcs-code-copy:focus {
-	font-family: Consolas,Monaco,'Andale Mono',monospace;
-	font-size: 13px;
-	line-height: 1.428571429;
-}
-
+// Hint that appears on mouseover
 .wpcs-code-select {
 	font: 14px/1 Arial, "Helvetica Neue", Helvetica, sans-serif;
 	color: #fff;
