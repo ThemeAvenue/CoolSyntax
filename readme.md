@@ -2,6 +2,8 @@
 
 CoolSyntax is code highlighter plugin for WordPress. It relies on [Prism](http://prismjs.com/).
 
+[![CoolSyntax Demo Video](http://i.imgur.com/VG0vJlx.png)](http://www.youtube.com/watch?v=lIb1XJFRVpY)
+
 ## Easy for users ##
 
 We wanted users to be able to copy the code by simply copying the content of the textarea. Just click on an highlighted code and it turns into a textarea.
